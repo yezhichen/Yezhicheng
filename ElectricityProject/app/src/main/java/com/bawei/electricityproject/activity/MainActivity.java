@@ -1,6 +1,8 @@
 package com.bawei.electricityproject.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +24,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private TextView login_register;
     private Button login;
     private LoginPresenter loginPresenter;
+    private SharedPreferences sp;
 
     @Override
     protected int layoutID() {
@@ -30,9 +33,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initView() {
+        //创建sharedpreference
+        sp = getSharedPreferences("jzmm", Context.MODE_PRIVATE);
+
         login_phone = findViewById(R.id.login_phone);
         login_pwd = findViewById(R.id.login_pwd);
-
         reb_pwd = findViewById(R.id.reb_pwd);
         login_register = findViewById(R.id.login_register);
         login = findViewById(R.id.login);
@@ -40,13 +45,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         login_register.setOnClickListener(this);
         login.setOnClickListener(this);
         loginPresenter = new LoginPresenter();
-        loginPresenter.attachView(this);
-
     }
 
     @Override
     protected void initData() {
-
+        if (sp.getBoolean("记住密码",false)){
+            String phone = sp.getString("phone", "");
+            String pwd = sp.getString("pwd", "");
+            login_phone.setText(phone);
+            login_pwd.setText(pwd);
+            reb_pwd.setChecked(true);
+        }
+        loginPresenter.attachView(this);
     }
 
     @Override
@@ -54,8 +64,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.login:
                 //点击登录获取输入框内容
-                String login_phone = this.login_phone.getText().toString();
-                String login_pwd = this.login_pwd.getText().toString();
+                String login_phone = this.login_phone.getText().toString().trim();
+                String login_pwd = this.login_pwd.getText().toString().trim();
+                SharedPreferences.Editor edit = sp.edit();
+                edit.putBoolean("记住密码",reb_pwd.isChecked());
+                edit.putString("phone",login_phone);
+                edit.putString("pwd",login_pwd);
+                edit.commit();
                 boolean mobileNO = Utils.isMobileNO(login_phone);
                 if (!mobileNO) {
                     Toast.makeText(this, "手机号不正规", Toast.LENGTH_SHORT).show();
@@ -67,9 +82,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 loginPresenter.requestModel(login_phone, login_pwd);
                 break;
-            case R.id.reb_pwd:
-                break;
+                //快速注册
             case R.id.login_register:
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
                 break;
         }
     }

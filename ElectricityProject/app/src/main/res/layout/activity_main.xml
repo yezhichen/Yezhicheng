@@ -23,7 +23,7 @@
 
         <EditText
             android:id="@+id/login_phone"
-            android:layout_width="300dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="   手机号"
@@ -32,7 +32,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="2dp"
         android:layout_marginTop="10dp"
         android:background="#fff" />
@@ -47,12 +47,12 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:src="@mipmap/login_lock" />
 
         <EditText
             android:id="@+id/login_pwd"
-            android:layout_width="280dp"
+            android:layout_width="200dp"
+            android:password="true"
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="    登录密码"
@@ -65,7 +65,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="2dp"
         android:layout_marginTop="10dp"
         android:background="#fff" />
@@ -89,7 +89,7 @@
             android:id="@+id/login_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="140dp"
             android:text="快速注册"
             android:textColor="#fff" />
     </LinearLayout>
