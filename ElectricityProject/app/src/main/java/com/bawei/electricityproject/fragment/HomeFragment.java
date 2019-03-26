@@ -5,11 +5,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bawei.electricityproject.R;
 import com.bawei.electricityproject.activity.DetailedActivity;
+import com.bawei.electricityproject.activity.SearchActivity;
 import com.bawei.electricityproject.adapter.FashionAdapter;
 import com.bawei.electricityproject.adapter.HotAdapter;
 import com.bawei.electricityproject.adapter.LifeAdapter;
@@ -20,6 +22,7 @@ import com.bawei.electricityproject.contract.BannerContract;
 import com.bawei.electricityproject.contract.HotContract;
 import com.bawei.electricityproject.presenter.BannerPresenter;
 import com.bawei.electricityproject.presenter.HotPresenter;
+import com.bawei.electricityproject.view.Search;
 import com.bumptech.glide.Glide;
 import com.stx.xhb.xbanner.XBanner;
 
@@ -39,6 +42,7 @@ public class HomeFragment extends BaseFragment implements BannerContract.BannerV
     private RecyclerView rv2;
     private RecyclerView rv3;
     private HotPresenter hotPresenter;
+    private Search search;
 
     @Override
     protected int layoutID() {
@@ -58,8 +62,16 @@ public class HomeFragment extends BaseFragment implements BannerContract.BannerV
         GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getContext(), 2);
         rv3.setLayoutManager(gridLayoutManager1);
         rv2.setLayoutManager(linearLayoutManager);
-
         hotPresenter = new HotPresenter();
+        search = view.findViewById(R.id.search);
+       EditText et_search= view.findViewById(R.id.et_search);
+       et_search.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(getContext(), SearchActivity.class);
+               startActivity(intent);
+           }
+       });
     }
 
     @Override
@@ -69,7 +81,6 @@ public class HomeFragment extends BaseFragment implements BannerContract.BannerV
 
         hotPresenter.attachView(this);
         hotPresenter.requestModel();
-
     }
 
     @Override
@@ -106,13 +117,28 @@ public class HomeFragment extends BaseFragment implements BannerContract.BannerV
         ShowBean.ResultBean.PzshBean pzsh = result.getPzsh();
         List<ShowBean.ResultBean.PzshBean.CommodityListBeanX> commodityList1 = pzsh.getCommodityList();
        FashionAdapter fashionAdapter = new FashionAdapter(getContext(), commodityList1);
-
+        fashionAdapter.setItemClickListener(new HotAdapter.onItemClickListener() {
+            @Override
+            public void onCklic(int i) {
+                Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                intent.putExtra("id",""+i);
+                startActivity(intent);
+            }
+        });
 
         ShowBean.ResultBean.MlssBean mlss = result.getMlss();
         List<ShowBean.ResultBean.MlssBean.CommodityListBean> commodityList2 = mlss.getCommodityList();
        LifeAdapter lifeAdapter = new LifeAdapter(getContext(), commodityList2);
-        rv2.setAdapter(fashionAdapter);
-        rv3.setAdapter(lifeAdapter);
+        rv3.setAdapter(fashionAdapter);
+        rv2.setAdapter(lifeAdapter);
+        lifeAdapter.setItemClickListener(new HotAdapter.onItemClickListener() {
+            @Override
+            public void onCklic(int i) {
+                Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                intent.putExtra("id",""+i);
+                startActivity(intent);
+            }
+        });
     }
 
 }

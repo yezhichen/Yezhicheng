@@ -30,7 +30,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.MyViewHolder3>
     @NonNull
     @Override
     public MyViewHolder3 onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.life_show, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.fashion_show, viewGroup, false);
         MyViewHolder3 myViewHolder = new MyViewHolder3(view);
         return myViewHolder;
     }
@@ -40,11 +40,18 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.MyViewHolder3>
         String masterPic = commodityList2.get(i).getMasterPic();
         String commodityName = commodityList2.get(i).getCommodityName();
         int price = commodityList2.get(i).getPrice();
+        final int commodityId = commodityList2.get(i).getCommodityId();
         String s = Integer.toString(price);
         myViewHolder3.price.setText("￥："+s);
         myViewHolder3.title.setText(commodityName);
         Uri uri = Uri.parse(masterPic);
         myViewHolder3.img.setImageURI(uri);
+        myViewHolder3.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onCklic(commodityId);
+            }
+        });
     }
 
     @Override
@@ -60,9 +67,17 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.MyViewHolder3>
 
         public MyViewHolder3(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.life_img);
-            price = itemView.findViewById(R.id.life_price);
-            title = itemView.findViewById(R.id.life_title);
+            img = itemView.findViewById(R.id.fashion_img);
+            price = itemView.findViewById(R.id.fashion_price);
+            title = itemView.findViewById(R.id.fashion_title);
         }
+    }
+    public interface onItemClickListener{
+        void onCklic(int i);
+    }
+    private HotAdapter.onItemClickListener itemClickListener;
+
+    public void setItemClickListener(HotAdapter.onItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 }

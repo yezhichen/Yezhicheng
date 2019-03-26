@@ -35,7 +35,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void initView() {
         //创建sharedpreference
         sp = getSharedPreferences("jzmm", Context.MODE_PRIVATE);
-
         login_phone = findViewById(R.id.login_phone);
         login_pwd = findViewById(R.id.login_pwd);
         reb_pwd = findViewById(R.id.reb_pwd);
@@ -70,6 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 edit.putBoolean("记住密码",reb_pwd.isChecked());
                 edit.putString("phone",login_phone);
                 edit.putString("pwd",login_pwd);
+
                 edit.commit();
                 boolean mobileNO = Utils.isMobileNO(login_phone);
                 if (!mobileNO) {
@@ -93,11 +93,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     @Override
-    public void LoginData(String status) {
+    public void LoginData(String s, String status, int userId) {
         if (status.equals("0000")) {
             Intent intent = new Intent(MainActivity.this, ShowActivity.class);
             startActivity(intent);
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences.Editor edit = sp.edit();
+            String userI = Integer.toString(userId);
+            edit.putString("userId",userI);
+            edit.putString("sessionId",s);
+            edit.commit();
             finish();
         } else {
             Toast.makeText(this, "失败", Toast.LENGTH_SHORT).show();

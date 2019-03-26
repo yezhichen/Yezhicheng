@@ -1,5 +1,6 @@
 package com.bawei.electricityproject.presenter;
 
+import com.bawei.electricityproject.bean.DetailedBean;
 import com.bawei.electricityproject.contract.DetailedContract;
 import com.bawei.electricityproject.model.DetailedModel;
 
@@ -17,11 +18,11 @@ public class DetailedPresenter implements DetailedContract.DetailedPresenter {
     }
 
     @Override
-    public void requestModel( String id) {
-        detailedModel.response(id,new DetailedContract.DetailedModel.DetailedCallBack() {
+    public void requestModel(String s, String userId, String id) {
+        detailedModel.response(id,userId,s,new DetailedContract.DetailedModel.DetailedCallBack() {
             @Override
-            public void CallBack() {
-
+            public void CallBack(DetailedBean.ResultBean result) {
+                detailedView.detailedData(result);
             }
         });
     }

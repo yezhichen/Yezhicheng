@@ -1,5 +1,7 @@
 package com.bawei.electricityproject.model;
 
+import android.util.Log;
+
 import com.bawei.electricityproject.api.Api;
 import com.bawei.electricityproject.api.ApiService;
 import com.bawei.electricityproject.bean.LoginBean;
@@ -31,7 +33,10 @@ public class LoginModel implements LoginContract.LoginModel {
             @Override
             public void onResponse(Call<LoginBean> call, Response<LoginBean> response) {
                 String status = response.body().getStatus();
-                back.back(status);
+                String sessionId = response.body().getResult().getSessionId();
+                int userId = response.body().getResult().getUserId();
+                Log.i("ssssss", userId+"onResponse:短 "+sessionId);
+                back.back(status,sessionId,userId);
             }
 
             @Override

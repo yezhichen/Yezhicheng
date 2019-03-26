@@ -8,7 +8,7 @@ public interface LoginContract {
     //v层
     public interface LoginView{
         //这个方法是回调到v层的
-        public void LoginData(String status);
+        public void LoginData(String s, String status, int userId);
     }
     //p层
     public interface LoginPresenter{
@@ -21,7 +21,7 @@ public interface LoginContract {
     public interface LoginModel{
         public void response(String login_phone, String login_pwd,callBack back);
         public interface callBack{
-            public void back(String status);
+            public void back(String s, String status, int userId);
         };
     }
 }

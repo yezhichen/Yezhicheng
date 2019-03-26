@@ -29,7 +29,8 @@
             android:name="design_height_in_dp"
             android:value="640" />
 
-        <activity android:name=".activity.DetailedActivity"></activity>
+        <activity android:name=".activity.DetailedActivity" />
+        <activity android:name=".activity.SearchActivity"></activity>
     </application>
 
 </manifest>

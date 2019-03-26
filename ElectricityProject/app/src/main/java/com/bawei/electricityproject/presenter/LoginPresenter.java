@@ -21,8 +21,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     public void requestModel(String login_phone, String login_pwd) {
         loginModel.response(login_phone, login_pwd, new LoginContract.LoginModel.callBack() {
             @Override
-            public void back(String status) {
-                loginView.LoginData(status);
+            public void back(String s, String status, int userId) {
+                loginView.LoginData(status,s,userId);
             }
         });
     }
