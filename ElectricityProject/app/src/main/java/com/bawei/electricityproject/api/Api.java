@@ -17,4 +17,7 @@ public class Api {
     public static final String detailed = "http://mobile.bwstudent.com/small/commodity/";
     //http://172.17.8.100/small/commodity/v1/findCommodityByKeyword关键字查询
     public static final String keyword = "http://mobile.bwstudent.com/small/commodity/";
+
+    public static final String gogo="http://mobile.bwstudent.com//small/order/verify/v1/syncShoppingCart";
+
 }

@@ -3,8 +3,8 @@ package com.bawei.electricityproject.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -15,14 +15,25 @@ import android.widget.Toast;
 import com.bawei.electricityproject.R;
 import com.bawei.electricityproject.adapter.DetailedAdapter;
 import com.bawei.electricityproject.base.BaseActivity;
+import com.bawei.electricityproject.bean.AddBean;
 import com.bawei.electricityproject.bean.DetailedBean;
+import com.bawei.electricityproject.bean.ResultBean;
+import com.bawei.electricityproject.contract.AddShopContract;
 import com.bawei.electricityproject.contract.DetailedContract;
+import com.bawei.electricityproject.contract.ShopTowContract;
+import com.bawei.electricityproject.presenter.AddShopPresenter;
 import com.bawei.electricityproject.presenter.DetailedPresenter;
+import com.bawei.electricityproject.presenter.ShopTwoPresenter;
+import com.bawei.electricityproject.view.Search;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class DetailedActivity extends BaseActivity implements DetailedContract.DetailedView, View.OnClickListener {
+public class DetailedActivity extends BaseActivity implements DetailedContract.DetailedView, View.OnClickListener,ShopTowContract.ShopTowView,AddShopContract.AddShopView {
 
     private DetailedPresenter detailedPresenter;
     private SharedPreferences sp;
@@ -37,6 +48,11 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     private ImageView back;
     private ImageView add_shop;
     private ImageView buy;
+    private ShopTwoPresenter shopTwoPresenter;
+    private String userId;
+    private String sessionId;
+    private int commodityId;
+    private AddShopPresenter addShopPresenter;
 
     @Override
     protected int layoutID() {
@@ -60,14 +76,20 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
         back.setOnClickListener(this);
         detailedPresenter = new DetailedPresenter();
         detailedPresenter.attachView(this);
+        shopTwoPresenter = new ShopTwoPresenter();
+        shopTwoPresenter.attachView(this);
+        addShopPresenter = new AddShopPresenter();
+        addShopPresenter.attachView(this);
+
     }
 
     @Override
     protected void initData() {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-        String userId = sp.getString("userId", "");
-        String sessionId = sp.getString("sessionId", "");
+        userId = sp.getString("userId", "");
+        sessionId = sp.getString("sessionId", "");
+        Log.i("sisi", "initData: "+sessionId);
         Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
         detailedPresenter.requestModel(id, userId, sessionId);
     }
@@ -78,6 +100,7 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
         int saleNum = result.getSaleNum();
         int price = result.getPrice();
         String details = result.getDetails();
+        commodityId = result.getCommodityId();
         /*webView.loadData(details, "text/html; charset=UTF-8", null);
 
         //webview的自适应屏幕
@@ -133,7 +156,7 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_shop:
-                Toast.makeText(this, "11", Toast.LENGTH_SHORT).show();
+                shopTwoPresenter.requestModel(userId,sessionId);
                 break;
             case R.id.buy:
                 break;
@@ -141,5 +164,23 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void ShopData(List<ResultBean> result) {
+        List<AddBean> beans = new ArrayList<>();
+        for (int i = 0; i < result.size(); i++) {
+            beans.add(new AddBean(result.get(i).getCommodityId(),1));
+        }
+        beans.add(new AddBean(commodityId,1));
+        Gson gson = new Gson();
+        String data = gson.toJson(beans);
+        addShopPresenter.requestModel(userId,sessionId,data);
+    }
+
+    @Override
+    public void AddShopData(String message) {
+        Log.d("aaa",message);
+        Toast.makeText(this, ""+message, Toast.LENGTH_SHORT).show();
     }
 }

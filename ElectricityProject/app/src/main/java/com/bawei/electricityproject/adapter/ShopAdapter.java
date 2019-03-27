@@ -44,7 +44,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
         String pic = result.get(i).getPic();
         int price = result.get(i).getPrice();
         myViewHolder.shop_title.setText(commodityName);
-        myViewHolder.shop_price.setText(price+"");
+        myViewHolder.shop_price.setText("￥:"+price);
         Uri uri = Uri.parse(pic);
         myViewHolder.img.setImageURI(uri);
     }

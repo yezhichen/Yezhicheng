@@ -24,6 +24,8 @@ public class ShoppingCarFragment extends BaseFragment implements ShopContract.Sh
     private ShopPresenter shopPresenter;
     private SharedPreferences sp;
     private RecyclerView rv;
+    private String userId;
+    private String sessionId;
 
     @Override
     protected int layoutID() {
@@ -45,16 +47,20 @@ public class ShoppingCarFragment extends BaseFragment implements ShopContract.Sh
 
     @Override
     protected void initData() {
-        String userId = sp.getString("userId", "");
-        String sessionId = sp.getString("sessionId", "");
-        Log.i("user", userId+"initData: "+sessionId);
-        shopPresenter.requestModel(userId,sessionId);
+
     }
 
     @Override
     public void ShopData(List<ResultBean> result) {
-
         ShopAdapter shopAdapter = new ShopAdapter(getContext(), result);
         rv.setAdapter(shopAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        userId = sp.getString("userId", "");
+        sessionId = sp.getString("sessionId", "");
+        shopPresenter.requestModel(userId, sessionId);
     }
 }

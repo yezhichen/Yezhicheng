@@ -38,7 +38,7 @@ public class Adder extends LinearLayout implements View.OnClickListener {
                 nums.setText(""+i);
                 break;
             case R.id.jian:
-                if (i>0){
+                if (i>1){
                     i--;
                     nums.setText(""+i);
                 }else {

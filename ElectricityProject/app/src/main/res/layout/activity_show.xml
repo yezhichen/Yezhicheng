@@ -19,9 +19,12 @@
         android:id="@+id/show_rg"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="@drawable/rectangle"
         android:orientation="horizontal">
 
         <RadioButton
+
+            android:layout_marginBottom="9dp"
             android:id="@+id/home_frag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -31,6 +34,7 @@
             android:gravity="center" />
 
         <RadioButton
+            android:layout_marginBottom="9dp"
             android:id="@+id/circle_frag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -40,7 +44,9 @@
             android:gravity="center" />
 
         <RadioButton
+            android:layout_marginBottom="9dp"
             android:id="@+id/shopping_frag"
+            android:layout_marginRight="@dimen/dp_5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -49,6 +55,7 @@
             android:gravity="center" />
 
         <RadioButton
+            android:layout_marginBottom="9dp"
             android:id="@+id/ding_frag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -58,12 +65,13 @@
             android:gravity="center" />
 
         <RadioButton
+            android:layout_marginBottom="9dp"
             android:id="@+id/my_frag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableBottom="@drawable/my"
             android:button="@null"
+            android:drawableBottom="@drawable/my"
             android:gravity="center" />
     </RadioGroup>
 </LinearLayout>

@@ -7,15 +7,19 @@ import com.bawei.electricityproject.bean.LoginBean;
 import com.bawei.electricityproject.bean.RegisterBean;
 import com.bawei.electricityproject.bean.ShopBean;
 import com.bawei.electricityproject.bean.ShowBean;
+import com.bawei.electricityproject.bean.SuccessBean;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -46,7 +50,12 @@ public interface ApiService {
     //搜索
     @GET("small/commodity/v1/findCommodityByKeyword")
     Observable<KeyWordBean> getSearch(@Query("keyword") String keyword, @Query("page") int page, @Query("count") String count);
+
     //查询购物车http://mobile.bwstudent.com/small/order/verify/v1/findShoppingCart
     @GET("small/order/verify/v1/findShoppingCart")
     Observable<ShopBean> getShop(@Header("userId") String userId, @Header("sessionId") String sessionId);
+
+    //添加购物车 http://mobile.bwstudent.com/small/order/verify/v1/syncShoppingCart
+    @PUT("small/order/verify/v1/syncShoppingCart")
+    Observable<SuccessBean> getSuccess(@Header("userId") String userId, @Header("sessionId") String sessionId, @QueryMap Map<String, String> data);
 }
