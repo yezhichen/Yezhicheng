@@ -5,12 +5,24 @@ package com.bawei.electricityproject.bean;
  */
 public class ResultBean {
 
-        public boolean isCheck;
+        private boolean isCheck;
         private int commodityId;
         private String commodityName;
         private int count;
         private String pic;
         private int price;
+
+    public ResultBean(boolean isCheck, int commodityId, String commodityName, int count, String pic, int price) {
+        this.isCheck = isCheck;
+        this.commodityId = commodityId;
+        this.commodityName = commodityName;
+        this.count = count;
+        this.pic = pic;
+        this.price = price;
+    }
+
+    public ResultBean() {
+    }
 
     public boolean isCheck() {
         return isCheck;
@@ -58,5 +70,17 @@ public class ResultBean {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultBean{" +
+                "isCheck=" + isCheck +
+                ", commodityId=" + commodityId +
+                ", commodityName='" + commodityName + '\'' +
+                ", count=" + count +
+                ", pic='" + pic + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

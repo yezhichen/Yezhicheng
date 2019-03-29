@@ -4,18 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bawei.electricityproject.R;
 import com.bawei.electricityproject.bean.ResultBean;
-import com.bawei.electricityproject.bean.ShopBean;
+import com.bawei.electricityproject.view.Adder;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
         this.result = result;
     }
 
+
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -39,14 +43,29 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
         String commodityName = result.get(i).getCommodityName();
         String pic = result.get(i).getPic();
         int price = result.get(i).getPrice();
+        boolean b = result.get(i).isCheck();
+        myViewHolder.checkBox.setChecked(b);
         myViewHolder.shop_title.setText(commodityName);
-        myViewHolder.shop_price.setText("￥:"+price);
+        myViewHolder.shop_price.setText("￥:" + price);
         Uri uri = Uri.parse(pic);
         myViewHolder.img.setImageURI(uri);
+        String trim = myViewHolder.nums.getText().toString().trim();
+        Log.i("trim", "onBindViewHolder: "+trim);
+        myViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                result.get(i).setCheck(isChecked);
+
+                if (backListener != null) {
+                    backListener.callBack();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -60,6 +79,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
         private final SimpleDraweeView img;
         private final TextView shop_title;
         private final TextView shop_price;
+        private final Adder adder;
+        private final EditText nums;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +88,19 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
             img = itemView.findViewById(R.id.shop_img);
             shop_title = itemView.findViewById(R.id.shop_title);
             shop_price = itemView.findViewById(R.id.shop_price);
+            adder = itemView.findViewById(R.id.adder);
+            nums = itemView.findViewById(R.id.nums);
         }
+    }
+
+    public interface onCallBackListener {
+        void callBack();
+
+    }
+
+    private onCallBackListener backListener;
+
+    public void setBackListener(onCallBackListener backListener) {
+        this.backListener = backListener;
     }
 }

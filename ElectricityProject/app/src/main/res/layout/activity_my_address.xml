@@ -4,25 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".activity.SearchActivity">
+    tools:context=".activity.MyAddress">
 
-    <com.bawei.electricityproject.view.Search
-        android:id="@+id/search1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </com.bawei.electricityproject.view.Search>
-
-    <com.bawei.electricityproject.view.FlowLayout
-        android:id="@+id/liushi"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100">
-
-    </com.bawei.electricityproject.view.FlowLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加收货地址"
+        android:textSize="@dimen/sp_25" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/serach_rv"
+        android:id="@+id/rv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

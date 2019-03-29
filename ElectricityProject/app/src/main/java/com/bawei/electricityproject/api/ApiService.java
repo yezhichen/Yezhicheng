@@ -1,5 +1,6 @@
 package com.bawei.electricityproject.api;
 
+import com.bawei.electricityproject.bean.AddressBean;
 import com.bawei.electricityproject.bean.BannerBean;
 import com.bawei.electricityproject.bean.DetailedBean;
 import com.bawei.electricityproject.bean.KeyWordBean;
@@ -58,4 +59,7 @@ public interface ApiService {
     //添加购物车 http://mobile.bwstudent.com/small/order/verify/v1/syncShoppingCart
     @PUT("small/order/verify/v1/syncShoppingCart")
     Observable<SuccessBean> getSuccess(@Header("userId") String userId, @Header("sessionId") String sessionId, @QueryMap Map<String, String> data);
+    //查询地址http://172.17.8.100/small/user/verify/v1/receiveAddressList
+    @GET("small/user/verify/v1/receiveAddressList")
+    Observable<AddressBean> getaddress(@Header("userId") String userId, @Header("sessionId") String sessionId);
 }

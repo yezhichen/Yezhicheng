@@ -30,7 +30,9 @@
             android:value="640" />
 
         <activity android:name=".activity.DetailedActivity" />
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.CreatOder" />
+        <activity android:name=".activity.MyAddress"></activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.bawei.electricityproject.base.BaseActivity;
 import com.bawei.electricityproject.bean.KeyWordBean;
 import com.bawei.electricityproject.contract.SearchContract;
 import com.bawei.electricityproject.presenter.SearchPresenter;
+import com.bawei.electricityproject.view.FlowLayout;
 import com.bawei.electricityproject.view.Search;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.Searc
     private RecyclerView rv;
     private Button bt_search;
     private TextView tet;
+    private FlowLayout liushi;
 
     @Override
     protected int layoutID() {
@@ -38,6 +41,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.Searc
         search = findViewById(R.id.search1);
         bt_search = findViewById(R.id.bt_search);
         tet = findViewById(R.id.et_search);
+        liushi = findViewById(R.id.liushi);
         searchPresenter = new SearchPresenter();
         searchPresenter.attachView(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -50,7 +54,13 @@ public class SearchActivity extends BaseActivity implements SearchContract.Searc
             @Override
             public void onClick(View v) {
                 String text = tet.getText().toString().trim();
-                        searchPresenter.requestModel(text);
+                searchPresenter.requestModel(text);
+                final TextView textView = new TextView(SearchActivity.this);
+                textView.setText(text);
+                final ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+                liushi.addView(textView, params);
+                textView.setBackgroundResource(R.drawable.shap1);
+                textView.setTextSize(20);
             }
         });
     }
@@ -62,9 +72,9 @@ public class SearchActivity extends BaseActivity implements SearchContract.Searc
         searchAdapter.setItemClickListener(new HotAdapter.onItemClickListener() {
             @Override
             public void onCklic(int i) {
-                Toast.makeText(SearchActivity.this, ""+i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "" + i, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SearchActivity.this, DetailedActivity.class);
-                intent.putExtra("id",""+i);
+                intent.putExtra("id", "" + i);
                 startActivity(intent);
             }
         });

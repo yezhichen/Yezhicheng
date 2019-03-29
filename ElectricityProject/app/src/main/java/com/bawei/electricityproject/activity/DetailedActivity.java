@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DetailedActivity extends BaseActivity implements DetailedContract.DetailedView, View.OnClickListener,ShopTowContract.ShopTowView,AddShopContract.AddShopView {
+public class DetailedActivity extends BaseActivity implements DetailedContract.DetailedView, View.OnClickListener, ShopTowContract.ShopTowView, AddShopContract.AddShopView {
 
     private DetailedPresenter detailedPresenter;
     private SharedPreferences sp;
@@ -53,6 +53,10 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     private String sessionId;
     private int commodityId;
     private AddShopPresenter addShopPresenter;
+    private int saleNum;
+    private int price;
+    private String commodityName;
+    private String img;
 
     @Override
     protected int layoutID() {
@@ -89,16 +93,16 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
         String id = intent.getStringExtra("id");
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
-        Log.i("sisi", "initData: "+sessionId);
+        Log.i("sisi", "initData: " + sessionId);
         Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
         detailedPresenter.requestModel(id, userId, sessionId);
     }
 
     @Override
     public void detailedData(DetailedBean.ResultBean result) {
-        String commodityName = result.getCommodityName();
-        int saleNum = result.getSaleNum();
-        int price = result.getPrice();
+        commodityName = result.getCommodityName();
+        saleNum = result.getSaleNum();
+        price = result.getPrice();
         String details = result.getDetails();
         commodityId = result.getCommodityId();
         /*webView.loadData(details, "text/html; charset=UTF-8", null);
@@ -124,13 +128,17 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
         imageViews = new ArrayList<>();
         String picture = result.getPicture();
         split = picture.split(",");
+
         for (int i = 0; i < split.length; i++) {
             ImageView imageView = new ImageView(DetailedActivity.this);
             Glide.with(DetailedActivity.this).load(split[i]).into(imageView);
             imageViews.add(imageView);
             DetailedAdapter detailedAdapter = new DetailedAdapter(DetailedActivity.this, imageViews);
             pager.setAdapter(detailedAdapter);
+
         }
+        img = split[0];
+
         int i = pager.getCurrentItem() + 1;
         numbre.setText(i + "/" + split.length);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -154,11 +162,20 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.add_shop:
-                shopTwoPresenter.requestModel(userId,sessionId);
+                shopTwoPresenter.requestModel(userId, sessionId);
+                Toast.makeText(this, "同步成功", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.buy:
+                Intent intent = new Intent(this, CreatOder.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("sessionId", sessionId);
+                intent.putExtra("price", price+"");
+                intent.putExtra("commodityId", commodityId);
+                intent.putExtra("commodityName", commodityName);
+                intent.putExtra("img", img);
+                startActivity(intent);
                 break;
             case R.id.back:
                 finish();
@@ -170,17 +187,16 @@ public class DetailedActivity extends BaseActivity implements DetailedContract.D
     public void ShopData(List<ResultBean> result) {
         List<AddBean> beans = new ArrayList<>();
         for (int i = 0; i < result.size(); i++) {
-            beans.add(new AddBean(result.get(i).getCommodityId(),1));
+            beans.add(new AddBean(result.get(i).getCommodityId(), 1));
         }
-        beans.add(new AddBean(commodityId,1));
+        beans.add(new AddBean(commodityId, 1));
         Gson gson = new Gson();
         String data = gson.toJson(beans);
-        addShopPresenter.requestModel(userId,sessionId,data);
+        addShopPresenter.requestModel(userId, sessionId, data);
     }
 
     @Override
     public void AddShopData(String message) {
-        Log.d("aaa",message);
-        Toast.makeText(this, ""+message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + message, Toast.LENGTH_SHORT).show();
     }
 }

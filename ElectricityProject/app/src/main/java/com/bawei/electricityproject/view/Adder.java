@@ -1,7 +1,9 @@
 package com.bawei.electricityproject.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bawei.electricityproject.R;
+import com.bawei.electricityproject.activity.ShowActivity;
 
 /**
  * Created by 叶至成 on 2019/3/6.
@@ -46,5 +49,6 @@ public class Adder extends LinearLayout implements View.OnClickListener {
                 }
                 break;
         }
+
     }
 }
